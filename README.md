@@ -14,8 +14,9 @@ A detailed presentation of all the functions of the application (as ppt) is give
 
 Installation:
 1.	Place the portable "Fiji.app" (https://imagej.net/software/fiji/downloads) and "Tesseract-OCR" (https://osdn.net/frs/g_redir.php?m=acc&f=tesseract-ocr-alt%2Ftesseract-ocr-3.02-win32-portable.zip) in ~\Application
-2.	The source directory has some example images to try
-3.	The images will be automatically moved to destination directory through out the course of the running. Please return them to source directory before testing again
+2.	the requirements.txt has the modules to install in a new python environment before running the code
+3.	The source directory has some example images to try
+4.	The images will be automatically moved to destination directory through out the course of the running. Please return them to source directory before testing again
 
 
 Report on latest bugs:
