@@ -10,6 +10,10 @@ from PyQt5.QtCore import Qt
 curr_dir = os.getcwd()
 gray_color_table = [qRgb(i, i, i) for i in range(256)]
 
+global show_message_btn1
+global show_message_btn2
+global show_message_btn3
+
 
 def NumpyToQImage(im):
     qim = QImage()
@@ -68,14 +72,6 @@ def view_file_location(img_location):
 def show_message(message, btn1=False, btn1_name="Button1", btn1_fun=lambda: None,
                  btn2=False, btn2_name="Button2", btn2_fun=lambda: None,
                  btn3=False, btn3_name="Button3", btn3_fun=lambda: None):  # Default layout has an OK Button
-
-    global show_message_btn1
-    global show_message_btn2
-    global show_message_btn3
-
-    show_message_btn1 = False
-    show_message_btn2 = False
-    show_message_btn3 = False
 
     msg_box = QMessageBox()
     msg_box.raise_()

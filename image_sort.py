@@ -29,7 +29,6 @@ from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QF
 import Ui_ImageSort
 import common
 
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 pytesseract.pytesseract.tesseract_cmd = (os.path.join(os.getcwd(), "Application\\Tesseract-OCR\\tesseract.exe"))
 
 # Functions defined in the common class
@@ -42,10 +41,6 @@ del_folder = common.del_folder
 MaskRole1 = Qt.UserRole + 100
 MaskRole2 = Qt.UserRole + 100
 
-
-# a = datetime.datetime.now()
-# b = datetime.datetime.now()
-# print("time = ", b - a)
 
 # Main class to do Image sorting (First Window)
 class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
@@ -174,7 +169,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
         # To correct the data addition into dictionary without index failure
         if self.scale_txt and self.scale_len and self.scale_mag and self.clicked_once is False:
 
-            if self.img_destination is not None:   # Always update excel sheet upon first click = make new dictionary
+            if self.img_destination is not None:  # Always update excel sheet upon first click = make new dictionary
                 self.img_destination.clear()
 
             self.img_destination = {"location": [], "scale": [], "pixel": [], "magnification": []}
@@ -310,7 +305,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
 
     # This is to change Source or Destination folder
     def change_directory(self, selection):
-        if selection is 0:
+        if selection == 0:
             file = self.openFileNameDialog()
             try:
                 self.curr_dir_source = os.path.dirname(file)
@@ -318,7 +313,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
             except:
                 pass
 
-        if selection is 1:
+        if selection == 1:
             file = self.openFileNameDialog()
             try:
                 self.curr_dir_destination = os.path.dirname(file)
@@ -330,11 +325,11 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
     # Change label (manual or OCR) and Button text (update source location function will be called first)
     def change_button_text(self, selection):
 
-        if selection is 0:  # Default/Manual
+        if selection == 0:  # Default/Manual
             self.click1()
             self.label_4.setText("Mode of Data Entry: Manual")
             self.pushButton_2.setText("Manual Mode")
-        if selection is 1:  # Semi Auto
+        if selection == 1:  # Semi Auto
             self.click1()
             self.label_4.setText("Mode of Data Entry: Semi-Auto")
             self.pushButton_2.setText("OCR Mode (Default)")
@@ -441,8 +436,6 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
             ocr = img[int(0.90 * height):height, int(0.50 * width):width]  # cropping the bottom 10% part of the image
             # and the right 50% of the image (make suitable changes)
 
-
-
             # First estimate the scale label width by scanning lines (longest white line, could be also border of box)
             length, start_col, end_col = self.ocr_len(ocr)
             ocr_new = ocr[0:height, start_col:end_col]
@@ -510,8 +503,6 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
                 x_BR = max(x1_BR, x2_BR)
                 y_BR = max(y1_BR, y2_BR)
 
-                print(x_TL, y_TL, x_BR, y_BR)
-
                 # Give a little clarence if required
                 ocr_final = ocr_new[y_TL:y_BR, x_TL:x_BR]
 
@@ -530,12 +521,12 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
                     threshold_final = cv2.threshold(ocr_final, 200 - thresh_inc, 250 - thresh_inc, cv2.THRESH_BINARY)[1]
                     avg_color_per_row = np.average(threshold_final, axis=0)
                     avg_color = np.average(avg_color_per_row, axis=0)
-                    thresh_inc = thresh_inc+5
+                    thresh_inc = thresh_inc + 5
                     # We must assign a limit value so that the while loop does not run infinitely
                     if 200 - thresh_inc == 25:
                         break
 
-                thresh_inc = 5   # Threshold increment back to 5
+                thresh_inc = 5  # Threshold increment back to 5
                 # If the average color is pure white, then threshold range was slightly off (image could be too bright)
                 while avg_color >= 235.0 and flag == 0:
                     threshold_final = cv2.threshold(ocr_final, 200 + thresh_inc, 250, cv2.THRESH_BINARY)[1]
@@ -571,7 +562,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
             item = QListWidgetItem("*Completed OCR Check..\n")
             self.listWidget.addItem(item)
             self.listWidget.scrollToItem(item)
-            c = str(b-a)
+            c = str(b - a)
             c = c[:-3]
             item = QListWidgetItem("Total time taken for OCR check = %s (Hours:Min:Sec.Millisec)\n" % c)
             self.listWidget.addItem(item)
@@ -845,7 +836,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
     def ocr_mag(self, ocr_text, ocr_length):
         global mag
         s = "None"
-        if ocr_length is 0 or ocr_text is 0:
+        if ocr_length == 0 or ocr_text == 0:
             res = 0
         else:
             res = ocr_text / ocr_length
@@ -867,7 +858,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
                 s = os.path.join(self.destination_directory, "X_Unknown")
             else:
                 mag = int(200 / ratio)
-                mag = int(50 * round(float(mag/50), 0))          # Magnification is approx. always a multiplier of 50X
+                mag = int(50 * round(float(mag / 50), 0))  # Magnification is approx. always a multiplier of 50X
                 s = os.path.join(self.destination_directory, "X") + str(mag)
 
         self.scale_mag.append(mag)
@@ -888,7 +879,7 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
                     self.listWidget.scrollToItem(item)
 
                     item = QListWidgetItem("Scale length of image %i with scale text %i = %i pixels" % (
-                    j + 1, self.scale_txt[j], self.scale_len[j]))
+                        j + 1, self.scale_txt[j], self.scale_len[j]))
                     self.listWidget.addItem(item)
                     self.listWidget.scrollToItem(item)
 
@@ -913,41 +904,41 @@ class ImageSort(Ui_ImageSort.Ui_MainWindow, QMainWindow):
                 image = QImage(self.img_files[self.index_diff])
                 width = image.width()
                 height = image.height()
-                ratio = height/width
+                ratio = height / width
 
-                dialog.resize(1024, int(ratio*1024))
+                dialog.resize(1024, int(ratio * 1024))
                 dialog.exec_()
 
     # To open reassign the functions to the data entry mode selected based on button text
-    def eventFilter(self, source, event):
-
-        # Connect and disconnect Data Entry button
-        def reconnect(signal, newhandler=None, oldhandler=None):
-            while True:
-                try:
-                    if oldhandler is not None:
-                        signal.disconnect(oldhandler)
-                    else:
-                        signal.disconnect()
-                except TypeError:
-                    break
-            if newhandler is not None:
-                signal.connect(newhandler)
-
-        if event.type() == QEvent.MouseButtonPress:
-            if source is self.pushButton_2:
-                if self.pushButton_2.isEnabled():
-
-                    if self.pushButton_2.text() == "Manual Mode":
-                        #  Blank readings and View Results
-                        reconnect(self.pushButton_2.clicked, partial(self.list_view, True))
-                        self.pushButton_3.setVisible(False)
-
-                    if self.pushButton_2.text() == "OCR Mode (Default)":
-                        self.pushButton_3.setVisible(True)
-                        reconnect(self.pushButton_2.clicked, self.click2)
-
-        return super(ImageSort, self).eventFilter(source, event)
+    # def eventFilter(self, source, event):
+    #
+    #     # Connect and disconnect Data Entry button
+    #     def reconnect(signal, newhandler=None, oldhandler=None):
+    #         while True:
+    #             try:
+    #                 if oldhandler is not None:
+    #                     signal.disconnect(oldhandler)
+    #                 else:
+    #                     signal.disconnect()
+    #             except TypeError:
+    #                 break
+    #         if newhandler is not None:
+    #             signal.connect(newhandler)
+    #
+    #     if event.type() == QEvent.MouseButtonPress:
+    #         if source is self.pushButton_2:
+    #             if self.pushButton_2.isEnabled():
+    #
+    #                 if self.pushButton_2.text() == "Manual Mode":
+    #                     #  Blank readings and View Results
+    #                     reconnect(self.pushButton_2.clicked, partial(self.list_view, True))
+    #                     self.pushButton_3.setVisible(False)
+    #
+    #                 if self.pushButton_2.text() == "OCR Mode (Default)":
+    #                     self.pushButton_3.setVisible(True)
+    #                     reconnect(self.pushButton_2.clicked, self.click2)
+    #
+    #     return super(ImageSort, self).eventFilter(source, event)
 
     # To show the right click actions on list widget
     def on_context_menu(self, point):

@@ -22,8 +22,6 @@ import Ui_ImageCrop
 import common
 import image_roi
 
-
-
 show_message = common.show_message
 view_file_location = common.view_file_location
 view_image = common.view_image
@@ -49,17 +47,17 @@ class ImageCrop(Ui_ImageCrop.Ui_MainWindow, QMainWindow):
         self.curr_dir_destination = None
         self.newpathdir = None
 
-        self.transparency = 220            # A transparency is set for all the initial label images before global crop
+        self.transparency = 220  # A transparency is set for all the initial label images before global crop
         self.btn_img = [None, None, None,
-                        None, None, None]               # To store image for edit ROE button (to be disposed later)
-        self.img_files = None              # To store the image locations
-        self.img_crop = []                 # To store the cropped image locations for dictionary
-        self.length = 0                    # To store the number of files
-        self.img_files_border = []         # To store the label border, so as to descide if crop completed or not
-        self.set = 0                       # It stores the value of current set of images displayed
-        self.refresh = False               # If refresh is true, we are regenerating images on window (eg: after crop)
-        self.formCall = False              # To know if the ROI window is on or not
-        self.id = 0                        # To know the label id, image that has to be reloaded
+                        None, None, None]  # To store image for edit ROE button (to be disposed later)
+        self.img_files = None  # To store the image locations
+        self.img_crop = []  # To store the cropped image locations for dictionary
+        self.length = 0  # To store the number of files
+        self.img_files_border = []  # To store the label border, so as to descide if crop completed or not
+        self.set = 0  # It stores the value of current set of images displayed
+        self.refresh = False  # If refresh is true, we are regenerating images on window (eg: after crop)
+        self.formCall = False  # To know if the ROI window is on or not
+        self.id = 0  # To know the label id, image that has to be reloaded
 
         # Make ImageRoi Windows
         self.form3 = image_roi.ImageROI(self)
@@ -345,9 +343,10 @@ class ImageCrop(Ui_ImageCrop.Ui_MainWindow, QMainWindow):
             try:
                 workbook_read = xlrd.open_workbook('image_data.xlsx')
             except:
-                show_message("xlsx file cannot be opened, check if the workbook is used "
+                show_message("xls file cannot be opened, check if the workbook is used "
                              "by another application")
 
+            workbook_read = xlrd.open_workbook('image_data.xlsx')
             sheets = workbook_read.sheets()
             worksheet_read = sheets[0]
 

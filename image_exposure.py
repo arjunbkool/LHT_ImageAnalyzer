@@ -22,8 +22,8 @@ from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QG
     QGraphicsView, QApplication, QGraphicsEllipseItem, QSlider, QRadioButton, QLabel, QDialog, QVBoxLayout, QMenu, \
     QAction, QCheckBox
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
 import Ui_ImageExposure
@@ -205,14 +205,14 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             for i in range(self.length):
                 self.images[i] = Image.open(self.img_files[i])
 
-        if change is 0:
+        if change == 0:
             self.max_count_hist = []
             for i in range(self.length):
                 im = self.images[i].histogram()
                 im_max = max(im)
                 self.max_count_hist.append(im_max)
 
-        if self.hist_window_on is True and change is 0:
+        if self.hist_window_on == True and change == 0:
             self.hist_window_1.clear_plot()
             self.hist_window_2.clear_plot()
             self.hist_window_3.clear_plot()
@@ -220,7 +220,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             self.hist_window_5.clear_plot()
             self.hist_window_6.clear_plot()
 
-        if self.hist_window_on is True and change is 1:
+        if self.hist_window_on == True and change == 1:
             for i in range(6):
                 m = 6 * (self.set - 1) + i
                 if m < self.length:
@@ -415,7 +415,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             try:
                 workbook_read = xlrd.open_workbook('image_data.xlsx')
             except:
-                show_message("xlsx file cannot be opened, check if the workbook is used "
+                show_message("xls file cannot be opened, check if the workbook is used "
                              "by another application")
 
             sheets = workbook_read.sheets()
@@ -583,28 +583,28 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
 
         self.button_ID = button
 
-        if button is 1:
+        if button == 1:
             self.pixel_window_on = False
             for i in range(6):
                 self.Radios[i].setVisible(True)
                 self.checkBoxes[i].setVisible(False)
             self.pushButton_7.setText("Histogram Equalisation")
             reconnect(self.pushButton_7.clicked, partial(self.Auto_Brightness, self.button_ID))
-        if button is 2:
+        if button == 2:
             for i in range(6):
                 self.Radios[i].setVisible(True)
                 self.checkBoxes[i].setVisible(False)
             self.pixel_window_on = False
             self.pushButton_7.setText("Resize Equalisation")
             reconnect(self.pushButton_7.clicked, partial(self.Auto_Brightness, self.button_ID))
-        if button is 3:
+        if button == 3:
             for i in range(6):
                 self.Radios[i].setVisible(True)
                 self.checkBoxes[i].setVisible(False)
             self.pixel_window_on = False
             self.pushButton_7.setText("Absolute Equalisation")
             reconnect(self.pushButton_7.clicked, partial(self.Auto_Brightness, self.button_ID))
-        if button is 4:
+        if button == 4:
             for i in range(6):
                 self.Radios[i].setVisible(False)
                 self.buttonGroup_2.removeButton(self.checkBoxes[i])
@@ -641,7 +641,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
         m = 6 * (self.set - 1) + Radio_id
 
         # Histogram Equalisation
-        if button is 1:
+        if button == 1:
             def hist_norm(source, template):
 
                 olddtype = source.dtype
@@ -672,7 +672,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             self.click1(1)
 
         # Resize Equalisation
-        if button is 2:
+        if button == 2:
             im_template = np.asarray(self.images[m].convert('L'))
             img = cv2.resize(im_template, (1, 1))
             img_ref_value = int(img[[0]])
@@ -710,7 +710,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             self.click1(1)
 
         # Absolute Equalisation
-        if button is 3:
+        if button == 3:
             im_template = self.images[m].convert('L')
             # px_template = im_template.load()
             # print("value of pixel for source at 4X4 = ", px_template[4, 4])
@@ -760,7 +760,7 @@ class ImageExposure(Ui_ImageExposure.Ui_MainWindow, QMainWindow):
             self.click1(1)
 
         # Selective Equalisation
-        if button is 4:
+        if button == 4:
             self.pixel_window_on = True
 
         # Update the plot ranges after enhancement
@@ -1303,7 +1303,7 @@ class Click_QGraphicsView(QGraphicsView):
 
     def action(self):
 
-        if self.div is 0:
+        if self.div == 0:
             self.div = 1
 
         if self.ref is not None:

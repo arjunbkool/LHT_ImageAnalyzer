@@ -17,8 +17,6 @@ from PyQt5.QtWidgets import QMenu, QAction, QMainWindow, QTreeWidgetItem
 import Ui_ImageAnalyze
 import common
 
-# import imglyb
-
 
 # Functions defined in common class
 show_message = common.show_message
@@ -70,7 +68,7 @@ class ImageAnalyze(Ui_ImageAnalyze.Ui_MainWindow, QMainWindow):
         try:
             workbook_read = xlrd.open_workbook('image_data.xlsx')
         except:
-            show_message("xlsx file cannot be opened, check if the workbook is used "
+            show_message("xls file cannot be opened, check if the workbook is used "
                          "by another application")
 
         sheets = workbook_read.sheets()
@@ -85,7 +83,7 @@ class ImageAnalyze(Ui_ImageAnalyze.Ui_MainWindow, QMainWindow):
         # Adding image children to Source
         for col in range(worksheet.ncols):
             for row in range(worksheet.nrows):
-                if col is 0 and row > 0:
+                if col == 0 and row > 0:
                     source_child = QTreeWidgetItem([str(worksheet.cell_value(row, col))])
                     source.addChild(source_child)
 
@@ -97,11 +95,11 @@ class ImageAnalyze(Ui_ImageAnalyze.Ui_MainWindow, QMainWindow):
             best = None
             for col in range(0, 6):
                 if not str(worksheet.cell(row, col).value).startswith("<No"):
-                    if col is not 3 and col is not 2 and col is not 1:
+                    if col != 3 and col != 2 and col != 1:
                         best = worksheet.cell(row, col).value
 
             # Condition when there is OCR test conducted and destination is split between folders
-            if worksheet.cell(1, 3).value is not "":
+            if worksheet.cell(1, 3).value != "":
                 key = '{}'.format(str(worksheet.cell_value(row, 3)))
                 if key == "X0":
                     key = str("Unknown")
@@ -292,32 +290,32 @@ class ImageAnalyze(Ui_ImageAnalyze.Ui_MainWindow, QMainWindow):
         try:
             workbook_read = xlrd.open_workbook('image_data.xlsx')
         except:
-            show_message("xlsx file cannot be handled, check if the workbook is used "
+            show_message("xls file cannot be handled, check if the workbook is used "
                          "by another application")
 
         sheets = workbook_read.sheets()
         worksheet = sheets[0]
 
-        if folder is "No":  # It is an image file
+        if folder == "No":  # It is an image file
             for row in range(worksheet.nrows):
                 for col in range(worksheet.ncols):
-                    if col is 0 or col is 4 or col is 5:
+                    if col == 0 or col == 4 or col == 5:
                         if os.path.basename(path) == os.path.basename(str(worksheet.cell_value(row, col))):
                             scale_text = worksheet.cell_value(row, 1)
                             scale_length = worksheet.cell_value(row, 2)
 
-        if folder is "Yes":  # It is an image folder
+        if folder == "Yes":  # It is an image folder
             path_check = path
             No_of_files = 0
             for root, dirs, files in os.walk(path_check):
                 for name in files:
-                    if name is not "thumbs.db":
+                    if name != "thumbs.db":
                         path = os.path.join(root, name)         # This gets us the last file name within the folder
                         No_of_files = No_of_files + 1
 
             for row in range(worksheet.nrows):
                 for col in range(worksheet.ncols):
-                    if col is 3:
+                    if col == 3:
                         if folder_name == str(worksheet.cell_value(row, col)):
                             scale_text = worksheet.cell_value(row, 1)
                             scale_length = worksheet.cell_value(row, 2)
