@@ -1,0 +1,13 @@
+No
+1
+C:\Users\arjun\Downloads\Lufthansa\TrueBuild_pycharm\build\exe.win-amd64-3.7\Destination\Finished\X150\Test (4).jpg
+100.0
+343.0
+
+
+*** The parameters for imageJ macro are: 
+1) File/Folder (Yes = Folder, No = File) 
+2) No: of Files ( = 1 if its a single file)
+2) Name of file (Or starting file of the sequence) 
+3) Corresponding magnification scale - text
+4) Corresponding magnification scale - length ***
